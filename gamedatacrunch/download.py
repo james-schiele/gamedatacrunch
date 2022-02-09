@@ -4,7 +4,7 @@ import requests
 import pandas as pd
 import json
 from config.topgames.segmentations import *
-from config.topgames.segmentations_test import test_url_page
+from config.topgames.test_pull_for_released_filter import test_url_page
 
 top_100_performing_steam_games = []
 
@@ -17,6 +17,31 @@ def get_api_endpoint():
     api_endpoint = api_top_performing_endpoint_all_fields
     return api_endpoint
 
+
+def download_base():
+
+    page = 658 # hard-coded page number, max on today's site
+
+    for page in range(page, 665):
+
+        url = get_api_url() + test_url_page(page) # api for GameDataCrunch
+
+        response = requests.get(url=url)
+
+        if response.ok:
+            data = response.json()
+            json_data = json.loads(response.text)
+        else:
+            print("All pages ingested")
+            break
+
+        for i in json_data['ranks']:
+
+            top_100_performing_steam_games.append(i)
+
+        print("Page ", page, " ingested")
+
+        # return data
 
 def download():
 
