@@ -5,9 +5,22 @@ api_url_address = "https://www.gamedatacrunch.com"
 
 api_steam_endpoint = "/api/steam"
 
+api_top_performing_endpoint_all_fields = "/api/steam/list/all/reviews_total/?field=title,release_date,price,base_price_usd,ea_status,review,reviews_total,unfiltered_reviews_total,peak_ccu,followers,playtracker_insight_rank,current_topsellers_rank,reviews_score_fancy,metacritic_score,opencritic_score,hidden_gem_score"
+
 api_top_performing_endpoint = "/list/all/reviews_total/"
 
-api_top_performing_endpoint_all_fields = "/api/steam/list/all/reviews_total/?field=title,release_date,price,base_price_usd,ea_status,review,reviews_total,unfiltered_reviews_total,peak_ccu,followers,playtracker_insight_rank,current_topsellers_rank,reviews_score_fancy,metacritic_score,opencritic_score,hidden_gem_score"
+# PAGE
+def page_number(number):
+    return '?page={number}'
+
+api_page_number = '?page=1'
+
+# [FILTERS]
+api_filters_endpoint = "&filter="
+
+# METHODS
+def remove(string):
+    return string.replace(" ", "")
 
 # [TOP PERFORMING8
 
@@ -31,8 +44,11 @@ Opencritic = "opencritic_score",
 Hidden_score = "hidden_gem_score"
 )
 
-# [FILTERS]
-api_filters_endpoint = "&filter="
+# Released/ Unreleased
+Released = dict(
+Released = "re_out",
+Unreleased = "re_not"
+)
 
 # Store Categories
 # Player Mode
@@ -84,11 +100,6 @@ Remote_Play_To_Tablet = "sc42",
 Remote_Play_To_Phone = "sc41"
 )
 
-# Released/ Unreleased
-Released = dict(
-Released = "re_out",
-Unreleased = "re_not"
-)
 
 # Cost
 Cost = dict(
