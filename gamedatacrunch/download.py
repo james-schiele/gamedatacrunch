@@ -20,36 +20,14 @@ def get_api_endpoint():
 
 def download_base():
 
-    page = 658 # hard-coded page number, max on today's site
+    page = 1 # hard-coded page number, max on today's site
+    limit = 1000
 
-    for page in range(page, 665):
+    for i in range(page, limit):
 
-        url = get_api_url() + test_url_page(page) # api for GameDataCrunch
+        url = get_api_url() + test_url_page(i) # api for GameDataCrunch
 
-        response = requests.get(url=url)
-
-        if response.ok:
-            data = response.json()
-            json_data = json.loads(response.text)
-        else:
-            print("All pages ingested")
-            break
-
-        for i in json_data['ranks']:
-
-            top_100_performing_steam_games.append(i)
-
-        print("Page ", page, " ingested")
-
-        # return data
-
-def download():
-
-    page = 658
-
-    for page in range(page, 665):
-
-        url = get_api_url() + test_url_page(page)
+        # print(url)
 
         response = requests.get(url=url)
 
@@ -64,17 +42,15 @@ def download():
 
             top_100_performing_steam_games.append(i)
 
+
         print("Page ", page, " ingested")
 
+        page += 1
         # return data
-            
-print("File one __name__ is set to: {}" .format(__name__))
-
-# create base table df
 
 if __name__ == "__main__":
-    data = download()
+    data = download_base()
     df = pd.DataFrame.from_records(top_100_performing_steam_games)
 
     df["test_col"] = "test"
-    test_csv = df.to_csv('testcsv.csv')
+    test_csv = df.to_csv('gamedatacrunch.csv')

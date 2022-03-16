@@ -14,7 +14,10 @@ import requests
 # 5 merge all dataframes to a base table of items and nest duplicate values using "Steamappid" as the unique identifier
 
 def test_url_page(number):
-    return f'/api/steam/list/all/reviews_total/?page={number}&field=title,release_date,price,base_price_usd,ea_status,review,reviews_total,unfiltered_reviews_total,peak_ccu,followers,playtracker_insight_rank,current_topsellers_rank,reviews_score_fancy,metacritic_score,opencritic_score,hidden_gem_scorel&sort_dir=-1'
+    return f'/api/steam/list/all/reviews_total/?page={number}&field=title,release_date,price,base_price_usd,ea_status,review,reviews_total,unfiltered_reviews_total,peak_ccu,followers,playtracker_insight_rank,current_topsellers_rank,reviews_score_fancy,metacritic_score,opencritic_score,hidden_gem_score&sort_dir=-1'
+
+# def filterd_page_test(number):
+#     return f'https://www.gamedatacrunch.com/api/steam/list/all/00/reviews_total?count=100&page=0&filters=re_out,ea_cur,tk160&filters_not=&sort_dir=-1&cache=true'
 
 # PAGE
 def page_number(number):
@@ -31,12 +34,13 @@ Released_URLs = []
 
 for key in NSFW:
     url = api_url_address+api_steam_endpoint+api_top_performing_endpoint + api_page_number +api_filters_endpoint+NSFW[key]
-    print(url)
     # print(api_url_address+api_steam_endpoint+api_top_performing_endpoint+page_url+api_filters_endpoint+Released[key])
     # Released_URLs.append(api_url_address+api_steam_endpoint+api_top_performing_endpoint+api_filters_endpoint+Released[key])
 
 def get_api_url():
     api_url = api_url_address+api_steam_endpoint+api_top_performing_endpoint+api_page_number+NSFW
+
+    print(api_url)
 
 def get_api_endpoints():
     endpoint = get_api_url()
