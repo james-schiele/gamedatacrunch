@@ -19,13 +19,20 @@ def test_url_page(number):
 # def filterd_page_test(number):
 #     return f'https://www.gamedatacrunch.com/api/steam/list/all/00/reviews_total?count=100&page=0&filters=re_out,ea_cur,tk160&filters_not=&sort_dir=-1&cache=true'
 
+def url_sdk_photon():
+    return f'/api/steam/list/all/reviews_total?count=100&page=0&field=title,release_date,price,base_price_usd,ea_status,review,reviews_total,unfiltered_reviews_total,peak_ccu,followers,playtracker_insight_rank,current_topsellers_rank,reviews_score_fancy,metacritic_score,opencritic_score,hidden_gem_score&filters=tk160,tk238&filters_not=&sort_dir=-1&cache=true%27'
+
+def url_sdk_discord():
+    return f'/api/steam/list/all/reviews_total?count=100&page=0&field=title,release_date,price,base_price_usd,ea_status,review,reviews_total,unfiltered_reviews_total,peak_ccu,followers,playtracker_insight_rank,current_topsellers_rank,reviews_score_fancy,metacritic_score,opencritic_score,hidden_gem_score&filters=tk160,tk146&filters_not=&sort_dir=-1&cache=true%27'
+
+def url_sdk_playfab():
+    return f'/api/steam/list/all/reviews_total?count=100&page=0&field=title,release_date,price,base_price_usd,ea_status,review,reviews_total,unfiltered_reviews_total,peak_ccu,followers,playtracker_insight_rank,current_topsellers_rank,reviews_score_fancy,metacritic_score,opencritic_score,hidden_gem_score&filters=tk160,tk205&filters_not=&sort_dir=-1&cache=true%27'
+
 # PAGE
 def page_number(number):
     return '?page=1'
-
 # [FILTERS]
 api_filters_endpoint = "&filter="
-
 # METHODS
 def remove(string):
     return string.replace(" ", "")

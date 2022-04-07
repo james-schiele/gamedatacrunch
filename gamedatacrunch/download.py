@@ -4,7 +4,7 @@ import requests
 import pandas as pd
 import json
 from config.topgames.segmentations import *
-from config.topgames.test_pull_for_released_filter import test_url_page
+from config.topgames.test_pull_for_released_filter import url_sdk_playfab, test_url_page
 
 top_100_performing_steam_games = []
 
@@ -20,12 +20,11 @@ def get_api_endpoint():
 
 def download_base():
 
-    page = 1 # hard-coded page number, max on today's site
-    limit = 1000
+    pages = 656 # hard-coded page number, max on today's site
 
-    for i in range(page, limit):
+    for page in range(pages):
 
-        url = get_api_url() + test_url_page(i) # api for GameDataCrunch
+        url = get_api_url() + test_url_page(page) # api for GameDataCrunch
 
         # print(url)
 
@@ -36,7 +35,6 @@ def download_base():
             json_data = json.loads(response.text)
         else:
             print("All pages ingested")
-            break
 
         for i in json_data['ranks']:
 
@@ -44,13 +42,10 @@ def download_base():
 
 
         print("Page ", page, " ingested")
-
-        page += 1
         # return data
 
 if __name__ == "__main__":
     data = download_base()
     df = pd.DataFrame.from_records(top_100_performing_steam_games)
 
-    df["test_col"] = "test"
-    test_csv = df.to_csv('gamedatacrunch.csv')
+    test_csv = df.to_csv('gamedatacrunch_pull.csv')
