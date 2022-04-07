@@ -48,4 +48,4 @@ if __name__ == "__main__":
     data = download_base()
     df = pd.DataFrame.from_records(top_100_performing_steam_games)
 
-    test_csv = df.to_csv('gamedatacrunch_pull.csv')
+    metadata_json = df.to_json('gamedatacrunch_metadata.json')

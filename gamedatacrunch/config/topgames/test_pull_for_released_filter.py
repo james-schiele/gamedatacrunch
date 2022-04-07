@@ -1,8 +1,4 @@
 from config.topgames.segmentations import api_url_address, api_steam_endpoint, api_top_performing_endpoint,api_page_number, NSFW
-# import bs4, sys
-# from urllib.request import urlopen
-# from selenium import webdriver
-# import time
 import requests
 
 # STAGES FOR INGESTING RELEASED STATUS
@@ -13,6 +9,7 @@ import requests
 # 4 do this for every "filter" type (see segmentations)
 # 5 merge all dataframes to a base table of items and nest duplicate values using "Steamappid" as the unique identifier
 
+# URL
 def test_url_page(number):
     return f'/api/steam/list/all/reviews_total/?page={number}&field=title,release_date,price,base_price_usd,ea_status,review,reviews_total,unfiltered_reviews_total,peak_ccu,followers,playtracker_insight_rank,current_topsellers_rank,reviews_score_fancy,metacritic_score,opencritic_score,hidden_gem_score&sort_dir=-1'
 
@@ -28,7 +25,10 @@ def url_sdk_discord():
 def url_sdk_playfab():
     return f'/api/steam/list/all/reviews_total?count=100&page=0&field=title,release_date,price,base_price_usd,ea_status,review,reviews_total,unfiltered_reviews_total,peak_ccu,followers,playtracker_insight_rank,current_topsellers_rank,reviews_score_fancy,metacritic_score,opencritic_score,hidden_gem_score&filters=tk160,tk205&filters_not=&sort_dir=-1&cache=true%27'
 
-# PAGE
+def url_metadata_table():
+    return f'/api/steam/list/all/reviews_total/?field=title'
+
+# PAGE FETCHER
 def page_number(number):
     return '?page=1'
 # [FILTERS]
@@ -39,7 +39,7 @@ def remove(string):
 
 Released_URLs = []
 
-for key in NSFW:
+for key in NSFW: # testing grabbing filters
     url = api_url_address+api_steam_endpoint+api_top_performing_endpoint + api_page_number +api_filters_endpoint+NSFW[key]
     # print(api_url_address+api_steam_endpoint+api_top_performing_endpoint+page_url+api_filters_endpoint+Released[key])
     # Released_URLs.append(api_url_address+api_steam_endpoint+api_top_performing_endpoint+api_filters_endpoint+Released[key])
