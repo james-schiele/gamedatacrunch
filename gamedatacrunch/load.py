@@ -1,6 +1,6 @@
 import json
 
-from gamedatacrunch.download import download
+from gamedatacrunch.config.topgames.download import download
 from gamedatacrunch.utils import get_data_folder, get_cached_database_filename
 from config.topgames.test_pull_for_released_filter import test_url_page
 

@@ -6,7 +6,6 @@ api_url_address = "https://www.gamedatacrunch.com"
 api_steam_endpoint = "/api/steam"
 
 api_top_performing_endpoint_all_fields = "/api/steam/list/all/reviews_total/?field=title,release_date,price,base_price_usd,ea_status,review,reviews_total,unfiltered_reviews_total,peak_ccu,followers,playtracker_insight_rank,current_topsellers_rank,reviews_score_fancy,metacritic_score,opencritic_score,hidden_gem_score"
-
 api_top_performing_endpoint = "/list/all/reviews_total/"
 
 # PAGE

@@ -1,11 +1,7 @@
-from asyncio.windows_events import INFINITE
-from email import header
-from json.encoder import INFINITY
 import requests
 import pandas as pd
 import json
-from config.topgames.segmentations import *
-from config.topgames.test_pull_for_released_filter import url_sdk_playfab, test_url_page
+# from config.topgames.test_pull_for_released_filter import url_sdk_playfab, test_url_page
 
 metadata_json = []
 df_metadata = ['TK_Number','Technology']
