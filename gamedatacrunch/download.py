@@ -20,7 +20,7 @@ def get_api_endpoint():
 
 def download_base():
 
-    pages = 656 # hard-coded page number, max on today's site
+    pages = 1000 # hard-coded page number, max on today's site
 
     for page in range(pages):
 
@@ -31,21 +31,21 @@ def download_base():
         response = requests.get(url=url)
 
         if response.ok:
-            data = response.json()
+            # data = response.json()
             json_data = json.loads(response.text)
         else:
             print("All pages ingested")
+            break
 
         for i in json_data['ranks']:
 
             top_100_performing_steam_games.append(i)
 
-
         print("Page ", page, " ingested")
-        # return data
+
+    df = pd.DataFrame.from_records(top_100_performing_steam_games)
+    gdc_pull = df.to_csv('gdc_top_steam_pull.csv')
+
 
 if __name__ == "__main__":
     data = download_base()
-    df = pd.DataFrame.from_records(top_100_performing_steam_games)
-
-    metadata_json = df.to_json('gamedatacrunch_metadata.json')
