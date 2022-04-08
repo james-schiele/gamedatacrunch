@@ -4,7 +4,7 @@ import requests
 import pandas as pd
 import json
 from config.topgames.segmentations import *
-from config.topgames.test_pull_for_released_filter import test_url_page
+from config.topgames.test_pull_for_released_filter import url_sdk_playfab, test_url_page
 
 top_100_performing_steam_games = []
 
@@ -20,16 +20,18 @@ def get_api_endpoint():
 
 def download_base():
 
-    page = 658 # hard-coded page number, max on today's site
+    pages = 1000 # hard-coded page number, max on today's site
 
-    for page in range(page, 665):
+    for page in range(pages):
 
         url = get_api_url() + test_url_page(page) # api for GameDataCrunch
 
+        # print(url)
+
         response = requests.get(url=url)
 
         if response.ok:
-            data = response.json()
+            # data = response.json()
             json_data = json.loads(response.text)
         else:
             print("All pages ingested")
@@ -41,40 +43,9 @@ def download_base():
 
         print("Page ", page, " ingested")
 
-        # return data
+    df = pd.DataFrame.from_records(top_100_performing_steam_games)
+    gdc_pull = df.to_csv('gdc_top_steam_pull.csv')
 
-def download():
-
-    page = 658
-
-    for page in range(page, 665):
-
-        url = get_api_url() + test_url_page(page)
-
-        response = requests.get(url=url)
-
-        if response.ok:
-            data = response.json()
-            json_data = json.loads(response.text)
-        else:
-            print("All pages ingested")
-            break
-
-        for i in json_data['ranks']:
-
-            top_100_performing_steam_games.append(i)
-
-        print("Page ", page, " ingested")
-
-        # return data
-            
-print("File one __name__ is set to: {}" .format(__name__))
-
-# create base table df
 
 if __name__ == "__main__":
-    data = download()
-    df = pd.DataFrame.from_records(top_100_performing_steam_games)
-
-    df["test_col"] = "test"
-    test_csv = df.to_csv('testcsv.csv')
+    data = download_base()
