@@ -2,57 +2,96 @@ import configparser
 import requests
 import json
 import pandas as pd
+import csv
+
+config = configparser.RawConfigParser()
+config.read("gamedatacrunch/config/topgames/gamedatacrunch_config.ini")
 
 ############################################################################################
 #                                       Technologies                                       #
 ############################################################################################
 
-unity_games = []
+# ENGINE___________________________________________________________________________________#
+#                                                                                          #
 
-config = configparser.RawConfigParser()
+tk_ids = []
+tk_names = []
 
-config.read("gamedatacrunch/config/topgames/gamedatacrunch_config.ini")
+tk_dict = []
+
+tech_dfs = []
+
+def retrieve_tk_id():
+    
+    with open('C:/Users/James Schiele\Documents\GitHub\gamedatacrunch\gdc_technames_metadata.csv', 'r') as csvfile:
+        datareader = csv.reader(csvfile)
+        next(datareader, None) 
+        for row in datareader:
+            if row[1] == 'Engine':
+                tk_ids.append(row[0])
+                tk_names.append(row[2])
+
+                entry = {row[0]:row[2]}
+
+                tk_dict.append(entry)
 
 def get_api_url():
     api_url = config.get("HTTP-ENDPOINT","GDC_API_URL_PREFIX")
     return api_url
 
-def url_page(number):
+def url_page(number, techid):
     all_steam_games_url_suffix_1 = config.get("HTTP-ENDPOINT", "TECHNAMES_API_1")
     all_steam_games_url_suffix_2 = config.get("HTTP-ENDPOINT", "TECHNAMES_API_2")
 
-    string = f'{number}{all_steam_games_url_suffix_1}{all_steam_games_url_suffix_2}'
+    string = f'{number}{all_steam_games_url_suffix_1},tk{techid}{all_steam_games_url_suffix_2}'
 
     return string
 
 def download_base():
 
-    pages = 1000 # hard-coded page number, max on today's site
+    count = 0
 
-    for page in range(pages):
+    for item in tk_dict:
 
-        url = (get_api_url()+url_page(page)).replace('\"',"") # api for GameDataCrunch
+        for key, value in item.items():
+            print(key,' and ',value)
 
-        print(url)
+        engine_games = []
+        pages = 1000
 
-        response = requests.get(url=url)
+        for page in range(10):
 
-        if response.ok:
-            # data = response.json()
-            json_data = json.loads(response.text)
-        else:
-            print("All pages ingested")
-            break
+            url = (get_api_url()+url_page(page,key)).replace('\"',"") # api for GameDataCrunch
 
-        for i in json_data['ranks']:
+            response = requests.get(url=url)
 
-            unity_games.append(i)
+            if response.ok:
+                # data = response.json()
+                json_data = json.loads(response.text)
+            else:
+                print("All pages ingested")
+                break
 
-        print("Page ", page, " ingested")
+            for i in json_data['ranks']:
+                engine_games.append(i)
 
-    df = pd.DataFrame.from_records(unity_games)
-    gdc_pull = df.to_csv('gdc_top_steam_pull.csv')
-    del df
+            print("Page ", page, " ingested")
+
+        df = f'df_{value}'
+
+        df = pd.DataFrame.from_records(engine_games)
+        df['Engine'] = value
+        df = df[['steam_appid','Engine']]
+        df = df.drop_duplicates()
+        tech_dfs.append(df)
+        gdc_pull = df.to_csv(f'{value[1]}_games.csv', index=False)
+        del df
+
+        count += 1
+    
+    final_df = pd.concat(tech_dfs).to_csv('final.csv', index=False)
 
 if __name__ == "__main__":
+
+    retrieve_tk_id()
     data = download_base()
