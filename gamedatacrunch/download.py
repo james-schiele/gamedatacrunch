@@ -3,9 +3,7 @@ from json.encoder import INFINITY
 import requests
 import pandas as pd
 import json
-from config.topgames.segmentations_gdc import *
 import configparser
-import math
 
 config = configparser.RawConfigParser()
 config.read("gamedatacrunch/config/topgames/gamedatacrunch_config.ini")
@@ -29,9 +27,7 @@ def url_page(number):
 
 def download_base():
 
-    pages = 667 # hard-coded page number, max on today's site
-
-    for page in range(665,pages):
+    for page in range(INFINITE):
 
         url = (get_api_url()+url_page(page)).replace('\"',"") # api for GameDataCrunch
 
@@ -53,8 +49,8 @@ def download_base():
         print("Page ", page, " ingested")
 
     df = pd.DataFrame.from_records(top_100_performing_steam_games)
-    gdc_pull = df.to_csv('gdc_top_steam_pull.csv')
+    gdc_pull = df.to_csv('gamedatacrunch_top_steam_games.csv')
     del df
 
 if __name__ == "__main__":
-    data = download_base()
+    download_base()
