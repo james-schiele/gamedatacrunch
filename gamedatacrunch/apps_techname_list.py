@@ -77,7 +77,7 @@ def download_base():
 
     count = 0
 
-    for item in tk_dict_engine:
+    for item in tk_dict_engine: # call API and get Steam keys for all games under each listed engine
 
         for key, value in item.items():
             print(key,' and ',value)
@@ -120,7 +120,7 @@ def download_base():
         except:
             break
 
-    for item in tk_dict_sdk:
+    for item in tk_dict_sdk: # call API and get Steam keys for all games under each listed sdk
 
         for key, value in item.items():
             print(key,' and ',value)
